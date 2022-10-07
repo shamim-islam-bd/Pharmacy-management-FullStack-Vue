@@ -2,11 +2,10 @@
   <div class="login-page">
     <div class="login-card">
       <!-- <div class="box" :class="{ 'box--right': movedToRight }"></div>
-
       <button @click="movedToRight = false">Move Left</button>
       <button class="ml-4" @click="movedToRight = true">Move Right</button>
-      <hr class="mt-4" /> -->
-      <!-- <Transition name="showhide">
+      <hr class="mt-4" />
+      <Transition name="showhide">
         <div class="box1 mt-4" v-if="showing"></div>
       </Transition>
 
@@ -18,18 +17,20 @@
       </div>
 
       <form action="#" @submit.prevent="handleSubmit">
-        <label class="block">Username</label>
+        <label class="block">Email</label>
         <input
-          type="text"
-          placeholder="Enter your username"
+          type="email"
+          placeholder="Enter your email"
+          v-model="formData.email"
           required
-          ref="username"
+          ref="email"
         />
 
         <label class="block mt-3">Password</label>
         <input
           type="password"
           placeholder="Enter password"
+          v-model="formData.password"
           required
           ref="password"
         />
@@ -55,20 +56,41 @@
 </template>
 
 <script>
-    export default{
-        data: () => ({
-            formData : {
-                username: '',
-                password: ''
-            },
-        }), 
+export default {
+  data: () => ({
+    formData: {
+      email: "",
+      password: "",
+    },
+    movedToRight: false,
+    showing: false,
+  }),
 
-        methods: {
-            handleSubmit(){
-                console.log(this.formData)
-            }
-        },
-    }
+  methods: {
+    handleSubmit() {
+      console.log(this.formData);
+      if (!this.formData.email) {
+        // Show toast message
+        this.$eventBus.emit("Toast", {
+          type: "Error",
+          message: "Please enter valied email",
+        });
+        this.$refs.email.focus();
+        return;
+      }
+      if (this.formData.password.length < 6) {
+        // Show toast message
+        this.$eventBus.emit("Toast", {
+          type: "Error",
+          message: "password must be at least 6 characters",
+        });
+
+        this.$refs.password.focus();
+        return;
+      }
+    },
+  },
+};
 </script>
 
 <style>

@@ -1,7 +1,19 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import "./assets/css/ayoflex.css"
+import { createApp } from 'vue';
+import App from './App.vue';
+// import "./assets/css/ayoflex.css"
 import "./assets/css/example.css"
-import './style.css'
+import "ayoflex/dist/ayoflex.min.css";
+import './style.css';
 
-createApp(App).mount('#app')
+
+import mitt from 'mitt';
+
+
+const eventBus = mitt()
+
+
+
+const app = createApp(App)
+app.config.globalProperties.$eventBus = eventBus;
+app.mount('#app')
+  
