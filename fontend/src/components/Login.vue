@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data: () => ({
     formData: {
@@ -88,6 +90,29 @@ export default {
         this.$refs.password.focus();
         return;
       }
+
+      // Send data to server
+      axios
+        .post("http://localhost:3000/login", this.formData)
+        .then((res) => {
+          console.log(res);
+          //   if (res.data.status === "success") {
+          //     // Show toast message
+          //     this.$eventBus.emit("Toast", {
+          //       type: "Success",
+          //       message: "Sucessfully Logged In",
+          //     });
+          //   } else {
+          //     // Show toast message
+          //     this.$eventBus.emit("Toast", {
+          //       type: "Error",
+          //       message: "Invalid email or password",
+          //     });
+          //   }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

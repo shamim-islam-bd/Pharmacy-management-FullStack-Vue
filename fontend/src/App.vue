@@ -15,6 +15,7 @@
 </template>
 
 <script>
+
 import Login from "./components/Login.vue";
 import Toast from "./components/Toast.vue";
 export default {
@@ -51,6 +52,9 @@ export default {
       }, 2222);
     },
   },
+
+
+
 };
 </script>
 
