@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Login />
+    <router-view></router-view>
     <!-- <div class="toasts"> -->
     <TransitionGroup name="slide-left" tag="div" class="toasts">
       <Toast
@@ -15,12 +15,9 @@
 </template>
 
 <script>
-
-import Login from "./components/Login.vue";
 import Toast from "./components/Toast.vue";
 export default {
   components: {
-    Login,
     Toast,
   },
 
@@ -52,9 +49,6 @@ export default {
       }, 2222);
     },
   },
-
-
-
 };
 </script>
 
