@@ -10,7 +10,6 @@
       </Transition>
 
       <button @click="showing = !showing">Show / Hide</button> -->
-
       <div class="text-center">
         <img src="/img/lock.png" class="login-card__icon" alt="" />
         <h2>User Login</h2>
@@ -19,7 +18,7 @@
       <form action="#" @submit.prevent="handleSubmit">
         <label class="block">Email</label>
         <input
-          type="email"
+          type="text"
           placeholder="Enter your email"
           v-model="formData.email"
           required
@@ -37,7 +36,9 @@
 
         <!-- <p class="text-center mt-3" v-if="loggingIn">Logging in...</p> -->
         <!-- <button type="submit" class="w-100 mt-3" v-else>Login</button> -->
-        <button type="submit" class="w-100 mt-3">Login</button>
+        <TheButton :block="true" :loading="loggingIn" class="mt-3">
+          Login
+        </TheButton>
 
         <div class="d-flex jc-between mt-3">
           <div>
@@ -57,6 +58,7 @@
 
 <script>
 import axios from "axios";
+import TheButton from "../components/TheButton.vue";
 
 export default {
   data: () => ({
@@ -64,10 +66,13 @@ export default {
       email: "",
       password: "",
     },
+    loggingIn: false,
     movedToRight: false,
     showing: false,
   }),
-
+  components: {
+    TheButton,
+  },
   methods: {
     handleSubmit() {
       console.log(this.formData);
@@ -93,25 +98,25 @@ export default {
 
       // Send data to server
       axios
-        .post("http://localhost:3000/login", this.formData)
+        .post("http://localhost:5000/login", this.formData)
         .then((res) => {
-          console.log(res);
-          //   if (res.data.status === "success") {
-          //     // Show toast message
-          //     this.$eventBus.emit("Toast", {
-          //       type: "Success",
-          //       message: "Sucessfully Logged In",
-          //     });
-          //   } else {
-          //     // Show toast message
-          //     this.$eventBus.emit("Toast", {
-          //       type: "Error",
-          //       message: "Invalid email or password",
-          //     });
-          //   }
+          // console.log(res);
+          // Show toast message
+          this.$eventBus.emit("Toast", {
+            type: "Success",
+            message: res.data.message,
+          });
         })
         .catch((err) => {
-          console.log(err);
+          let error = "Something went wrong";
+          if (err.response) {
+            error = err.response.data.error;
+          }
+          // Show toast message
+          this.$eventBus.emit("Toast", {
+            type: "Error",
+            message: error,
+          });
         });
     },
   },

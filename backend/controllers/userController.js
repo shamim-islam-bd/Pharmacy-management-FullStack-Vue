@@ -3,8 +3,7 @@ const ErrorHandler = require('../utils/errorHandler');
 const { sendToken } = require('../utils/jwtToken');
 const jwt = require('jsonwebtoken');
 
-
-// register a user
+// register a user ...
 // exports.registerUser = async(req, res, next) => { 
 //   try {
 //     const {name, email, password, role} = req.body;
@@ -43,35 +42,35 @@ const jwt = require('jsonwebtoken');
 // }
    
 
-// User Login 
-exports.LoginUser = async(req, res, next) => { 
+// User Login ...
+exports.LoginUser = async(req, res, next) => {  
   try {
-    const {email, password} = req.body;
-
-    // Checking if user has given password & email both.
-    if(!email || !password) {
-      throw new ErrorHandler(`Please provide email and password`, 400);
+    const { email, password } = req.body;
+    
+    // Checking if user has given password & email both... 
+    if(!email || !password){
+      throw new ErrorHandler( `Please provide email and password`, 400 );
     }
 
-    // Checking if user is registered or not.
-    const CheckUser = await User.findOne({email});
+    // Checking if user is registered or not...
+    const CheckUser = await User.findOne({ email });
     if(!CheckUser){
       throw new ErrorHandler(`User not registered`, 400);
     }
     
-    // Checking if user is registered or not. 
+    // Checking if user is registered or not... 
     const auth = await User.findOne({email}).select('+password');
      if(!auth){
        throw new ErrorHandler(`invailed email and password`, 400);
-     }
+    }
 
-     // compare password.
+     // Compare password... 
      const isPassMatched = await auth.comparePassword(password); 
      if(!isPassMatched){
        throw new ErrorHandler(`invailed email and password`, 400);
-      }
+    }
     
-    // generate and sending token for user.
+    // Generate and sending token for user... 
     sendToken(auth, res, 200);
     // const token = await user.getJwtToken(); 
     // console.log(token);
@@ -84,7 +83,7 @@ exports.LoginUser = async(req, res, next) => {
   }
 }
 
-// Logout user
+// Logout user ... 
 // exports.logoutUser = async(req, res, next) => {
 //   try {
 //     // res.cookie('token', null, {
@@ -101,7 +100,7 @@ exports.LoginUser = async(req, res, next) => {
 // }
 
 
-// geting Users 
+// geting Users ... 
 // exports.getUsers = async(req, res, next) => {
 //     try {
 //         const users = await User.find();
@@ -115,7 +114,7 @@ exports.LoginUser = async(req, res, next) => {
 // }
 
 
-//change or update passsword 
+//change or update passsword ... 
 // exports.Updatepassword = async(req, res, next) => {
 //   const user = await User.findById(req.user.id).select('+password');
 
@@ -134,7 +133,7 @@ exports.LoginUser = async(req, res, next) => {
 
 
 
-// Forgot Password......
+// Forgot Password... 
 // exports.ForgotPassword = async(req, res, next) => {
 //   try {
 //     const user = await User.findOne({email: req.body.email});
@@ -178,7 +177,7 @@ exports.LoginUser = async(req, res, next) => {
 // }
 
 
-// get single user
+// get single user... 
 // exports.getSingleUser = async(req, res, next) => {
 //   try {
 //     const user = await User.findById(req.params.id);
