@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../view/Dashboard.vue";
-// import Login from "../views/Login.vue";
-// import NotFound from "../views/NotFound.vue";
+import Login from "../view/Login.vue";
+import NotFound from "../view/NotFound.vue";
 
-const NotFound = () => import("../view/NotFound.vue");
-const Login = () => import("../view/Login.vue");
+// const NotFound = () => import("../view/NotFound.vue");
+// const Login = () => import("../view/Login.vue");
 
 const routes = [
   // {
@@ -27,6 +27,11 @@ const routes = [
     // name: "NotFound",
     component: NotFound,
   }
+  // {
+  //   path: "/:pathMatch(.*)*",
+  //   // name: "NotFound",
+  //   component: NotFound,
+  // }
 ];
 
 const router = createRouter({
