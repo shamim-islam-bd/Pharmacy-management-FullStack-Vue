@@ -1,6 +1,7 @@
 <template>
   <div class="login-page">
     <div class="login-card">
+      <!-- demo box moving with mouse -->
       <!-- <div class="box" :class="{ 'box--right': movedToRight }"></div>
       <button @click="movedToRight = false">Move Left</button>
       <button class="ml-4" @click="movedToRight = true">Move Right</button>
