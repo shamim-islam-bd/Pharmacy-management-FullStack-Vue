@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../view/Dashboard.vue";
-import Login from "../view/Login.vue";
-import NotFound from "../view/NotFound.vue";
+// import Login from "../view/Login.vue";
+// import NotFound from "../view/NotFound.vue";
 
-// const NotFound = () => import("../view/NotFound.vue");
-// const Login = () => import("../view/Login.vue");
+const NotFound = () => import("../view/NotFound.vue");
+const Login = () => import("../view/Login.vue");
 
 const routes = [
   // {
