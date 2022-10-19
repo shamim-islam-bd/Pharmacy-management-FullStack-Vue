@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      console.log(this.formData);
+      // console.log(this.formData);
       if (!this.formData.email) {
         // Show toast message
         this.$eventBus.emit("Toast", {
@@ -101,12 +101,15 @@ export default {
       axios
         .post("http://localhost:5000/login", this.formData)
         .then((res) => {
-          // console.log(res);
+          // console.log(res.data);
           // Show toast message
           this.$eventBus.emit("Toast", {
             type: "Success",
             message: res.data.message,
           });
+          // set token localstorage & redirect to dashboard.
+          localStorage.setItem("token", res.data.token);
+          this.$router.push("/dashboard");
         })
         .catch((err) => {
           let error = "Something went wrong";

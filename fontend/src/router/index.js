@@ -7,24 +7,34 @@ const NotFound = () => import("../view/NotFound.vue");
 const Login = () => import("../view/Login.vue");
 
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "Home",
-  //   component: () => import("../views/Home.vue"),
-  // },
+  {
+    path: "/",
+    name: "Home",
+    component: () => import("../view/Home.vue"),
+  },
   {
     path: "/login",
-    // name: "Login",
+    name: "Login",
     component: Login,
   },
   {
     path: "/dashboard",
     // name: "Dashboard",
     component: Dashboard,
+    children: [
+      {
+        path: "",
+        name: "Dashboard",
+        component: () => import("../view/Dashboard.vue"),
+
+        // meta: {
+        //   requiresAuth: true,
+        // },
+
+        
   },
   {
     path: "/:pathMatch(.*)*",
-    // name: "NotFound",
     component: NotFound,
   }
   // {
