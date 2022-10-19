@@ -75,7 +75,7 @@
         placeholder="Enter vendor name"
         class="mt-1 w-100"
         required
-        v-model="selectedVendor.name"
+        v-model="newVendor.name"
       />
 
       <label class="block mt-3">Description</label>
@@ -84,7 +84,7 @@
         placeholder="Write short description"
         class="mt-1 w-100"
         required
-        v-model="selectedVendor.description"
+        v-model="newVendor.description"
       />
 
       <the-button :loading="editing" class="w-100 mt-4">
@@ -96,7 +96,7 @@
   <TheModal v-model="deleteModal" heading="Are you sure?">
     <p>
       Do you really want to delete
-      <strong>{{ selectedVendor.name }}</strong>
+      <!-- <strong>{{ selectedVendor.name }}</strong> -->
     </p>
 
     <TheButton class="mt-4" @click="deleteVendor" :loading="deleting">
@@ -116,119 +116,93 @@ import TheModal from "../../components/TheModal.vue";
 export default {
   data: () => ({
     addModal: false,
-    deleteModal: false,
-    editModal: false,
-
     newVendor: {
       name: "",
-      description: ""
+      description: "",
     },
-    selectedVendor: {},
     deleting: false,
     editing: false,
     adding: false,
+    gettingVendors: false,
+    selectedVendor: {},
     vendors: [],
-    gettingVendors: false
   }),
   components: {
     TheButton,
-    TheModal
+    TheModal,
   },
 
-  mounted() {
-    this.getAllVendors();
-  },
+  mounted() {},
   methods: {
-    resetForm() {
-      this.newVendor = { name: "", description: "" };
+    addNew() {
+      this.adding = true;
+      axios
+        .post("http://localhost:5000/private/vendor", this.newVendor)
+        .then((res) => {
+          console.log(res.data);
+          // Show toast message
+          this.$eventBus.emit("Toast", {
+            type: "Success",
+            message: res.data.message,
+          });
+          this.addModal = false;
+          // clear the form
+          this.newVendor = {
+            name: "",
+            description: "",
+          };
+        })
+        .catch((err) => {
+          let error = "Something went wrong";
+          if (err.response) {
+            error = err.response.data.error;
+          }
+          // Show toast message
+          this.$eventBus.emit("Toast", {
+            type: "Error",
+            message: error,
+          });
+        });
     },
     getAllVendors() {
       this.gettingVendors = true;
       axios
-        .get(
-          "https://api.rimoned.com/api/pharmacy-management/v1/private/vendor",
-
-          {
-            headers: {
-              authorization: localStorage.getItem("accessToken")
-            }
-          }
-        )
+        .get("http://localhost:5000/private/vendors")
         .then((res) => {
+          console.log("res", res.data);
           this.vendors = res.data;
         })
         .catch((err) => {
-          let errorMessage = "Something went wrong!";
+          let error = "Something went wrong";
           if (err.response) {
-            errorMessage = err.response.data.message;
+            error = err.response.data.error;
           }
-
-          this.$eventBus.emit("toast", {
+          // Show toast message
+          this.$eventBus.emit("Toast", {
             type: "Error",
-            message: errorMessage
+            message: error,
           });
         })
         .finally(() => {
           this.gettingVendors = false;
         });
     },
-    addNew() {
-      // console.log(localStorage.getItem("accessToken"));
-      this.adding = true;
-      axios
-        .post(
-          "https://api.rimoned.com/api/pharmacy-management/v1/private/vendor",
-          this.newVendor,
-          {
-            headers: {
-              authorization: localStorage.getItem("accessToken")
-            }
-          }
-        )
-        .then((res) => {
-          console.log(res.data);
-          this.$eventBus.emit("toast", {
-            type: "Success",
-            message: res.data.message
-          });
-
-          this.addModal = false;
-          this.resetForm();
-          this.getAllVendors();
-        })
-        .catch((err) => {
-          let errorMessage = "Something went wrong!";
-          if (err.response) {
-            errorMessage = err.response.data.message;
-          }
-
-          this.$eventBus.emit("toast", {
-            type: "Error",
-            message: errorMessage
-          });
-        })
-        .finally(() => {
-          this.adding = false;
-        });
-    },
     deleteVendor() {
       this.deleting = true;
       axios
         .delete(
-          "https://api.rimoned.com/api/pharmacy-management/v1/private/vendor/" +
-            this.selectedVendor._id,
-
+          "http://localhost:5000/private/vendor/" + this.selectedVendor._id,
           {
             headers: {
-              authorization: localStorage.getItem("accessToken")
-            }
+              Authorization: localStorage.getItem("token"),
+            },
           }
         )
         .then((res) => {
           console.log(res.data);
           this.$eventBus.emit("toast", {
             type: "Success",
-            message: res.data.message
+            message: res.data.message,
           });
 
           this.deleteModal = false;
@@ -242,7 +216,7 @@ export default {
 
           this.$eventBus.emit("toast", {
             type: "Error",
-            message: errorMessage
+            message: errorMessage,
           });
         })
         .finally(() => {
@@ -253,21 +227,19 @@ export default {
       this.editing = true;
       axios
         .put(
-          "https://api.rimoned.com/api/pharmacy-management/v1/private/vendor/" +
-            this.selectedVendor._id,
+          "http://localhost:5000/private/vendor/" + this.selectedVendor._id,
           this.selectedVendor,
-
           {
             headers: {
-              authorization: localStorage.getItem("accessToken")
-            }
+              Authorization: localStorage.getItem("token"),
+            },
           }
         )
         .then((res) => {
           console.log(res.data);
           this.$eventBus.emit("toast", {
             type: "Success",
-            message: res.data.message
+            message: res.data.message,
           });
 
           this.editModal = false;
@@ -280,13 +252,13 @@ export default {
 
           this.$eventBus.emit("toast", {
             type: "Error",
-            message: errorMessage
+            message: errorMessage,
           });
         })
         .finally(() => {
           this.editing = false;
         });
-    }
-  }
+    },
+  },
 };
 </script>

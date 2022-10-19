@@ -1,14 +1,21 @@
+import axios from 'axios';
+import mitt from 'mitt';
 import { createApp } from 'vue';
+import App from './App.vue';
 import router from './router';
 
-import App from './App.vue';
+
 // import "./assets/css/ayoflex.css"
 import "ayoflex/dist/ayoflex.min.css";
 import "./assets/css/example.css";
 import './style.css';
 
 
-import mitt from 'mitt';
+// default axios token send for headers for all requests
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+
+
+
 
 
 const eventBus = mitt()

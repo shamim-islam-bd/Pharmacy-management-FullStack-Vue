@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <Login></Login> -->
     <router-view></router-view>
     <!-- <div class="toasts"> -->
     <TransitionGroup name="slide-left" tag="div" class="toasts">

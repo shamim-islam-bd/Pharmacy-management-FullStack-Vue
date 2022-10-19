@@ -1,47 +1,40 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Dashboard from "../view/Dashboard.vue";
-// import Login from "../view/Login.vue";
-// import NotFound from "../view/NotFound.vue";
+import Dashboard from "../views/Dashboard.vue";
+import Login from "../views/Login.vue";
 
-const NotFound = () => import("../view/NotFound.vue");
-const Login = () => import("../view/Login.vue");
+const NotFound = () => import("../views/NotFound.vue");
+// const Dashboard = () => import("../views/Dashboard.vue");
+
+const Overview = () => import("../views/dashboard/Overview.vue");
+const Drugs = () => import("../views/dashboard/Drugs.vue");
+const Vendors = () => import("../views/dashboard/Vendors.vue");
+const SellingHistory = () => import("../views/dashboard/SellingHistory.vue");
+const Settings = () => import("../views/dashboard/Settings.vue");
+
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: () => import("../view/Home.vue"),
-  },
-  {
-    path: "/login",
     name: "Login",
     component: Login,
   },
   {
     path: "/dashboard",
-    // name: "Dashboard",
+    name: "Dashboard",
+    redirect: "/dashboard/overview",
     component: Dashboard,
     children: [
-      {
-        path: "",
-        name: "Dashboard",
-        component: () => import("../view/Dashboard.vue"),
-
-        // meta: {
-        //   requiresAuth: true,
-        // },
-
-        
-  },
-  {
+      { path: "overview", component: Overview },
+      { path: "drugs", component: Drugs },
+      { path: "vendors", component: Vendors },
+      { path: "selling-history", component: SellingHistory },
+      { path: "settings", component: Settings }
+    ]
+   },
+   {
     path: "/:pathMatch(.*)*",
     component: NotFound,
-  }
-  // {
-  //   path: "/:pathMatch(.*)*",
-  //   // name: "NotFound",
-  //   component: NotFound,
-  // }
+   }
 ];
 
 const router = createRouter({
