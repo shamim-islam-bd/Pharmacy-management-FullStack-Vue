@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 router.post('/private/vendor', CreateVendor);
-router.get('/private/vendors', getAllVendors);
+router.get('/private/vendor', getAllVendors);
 
 
 module.exports = router;

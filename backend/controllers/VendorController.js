@@ -21,9 +21,9 @@ exports.CreateVendor = async (req, res, next) => {
 // geting all vendors 
 exports.getAllVendors = async(req, res, next) =>{
     try {
-      const data = await Vendor.find();
+      const vendorData = await Vendor.find();
 
-      res.status(500).json({success: true, data})
+      res.status(201).json({success: true, vendorData})
         
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });

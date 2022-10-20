@@ -16,10 +16,12 @@
     <tbody>
       <tr v-for="vendor in vendors" :key="vendor.name">
         <td>
+          <!-- Shamim -->
           {{ vendor.name }}
         </td>
+        <!-- <td>Reads In university</td> -->
         <td>{{ vendor.description }}</td>
-        <td>
+        <!-- <td>
           <img
             src="/img/edit.png"
             alt=""
@@ -38,7 +40,7 @@
               deleteModal = true;
             "
           />
-        </td>
+        </td> -->
       </tr>
     </tbody>
   </table>
@@ -116,30 +118,35 @@ import TheModal from "../../components/TheModal.vue";
 export default {
   data: () => ({
     addModal: false,
+    deleteModal: false,
+    editModal: false,
+
     newVendor: {
       name: "",
       description: "",
     },
+    selectedVendor: {},
     deleting: false,
     editing: false,
     adding: false,
-    gettingVendors: false,
-    selectedVendor: {},
     vendors: [],
+    gettingVendors: false,
   }),
   components: {
     TheButton,
     TheModal,
   },
 
-  mounted() {},
+  mounted() {
+    this.getAllVendors();
+  },
   methods: {
     addNew() {
       this.adding = true;
       axios
         .post("http://localhost:5000/private/vendor", this.newVendor)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           // Show toast message
           this.$eventBus.emit("Toast", {
             type: "Success",
@@ -167,15 +174,16 @@ export default {
     getAllVendors() {
       this.gettingVendors = true;
       axios
-        .get("http://localhost:5000/private/vendors")
+        .get("http://localhost:5000/private/vendor")
         .then((res) => {
-          console.log("res", res.data);
-          this.vendors = res.data;
+          // console.log("res", res.data.vendorData);
+          this.vendors = res.data.vendorData;
         })
         .catch((err) => {
           let error = "Something went wrong";
           if (err.response) {
-            error = err.response.data.error;
+            // console.log(err.response);
+            error = err.response.statusText;
           }
           // Show toast message
           this.$eventBus.emit("Toast", {
@@ -187,16 +195,12 @@ export default {
           this.gettingVendors = false;
         });
     },
+
     deleteVendor() {
       this.deleting = true;
       axios
         .delete(
-          "http://localhost:5000/private/vendor/" + this.selectedVendor._id,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
+          "http://localhost:5000/private/vendor/" + this.selectedVendor._id
         )
         .then((res) => {
           console.log(res.data);
