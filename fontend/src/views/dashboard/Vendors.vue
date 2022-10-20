@@ -21,7 +21,7 @@
         </td>
         <!-- <td>Reads In university</td> -->
         <td>{{ vendor.description }}</td>
-        <!-- <td>
+        <td>
           <img
             src="/img/edit.png"
             alt=""
@@ -40,7 +40,7 @@
               deleteModal = true;
             "
           />
-        </td> -->
+        </td>
       </tr>
     </tbody>
   </table>
@@ -77,7 +77,7 @@
         placeholder="Enter vendor name"
         class="mt-1 w-100"
         required
-        v-model="newVendor.name"
+        v-model="selectedVendor.name"
       />
 
       <label class="block mt-3">Description</label>
@@ -86,7 +86,7 @@
         placeholder="Write short description"
         class="mt-1 w-100"
         required
-        v-model="newVendor.description"
+        v-model="selectedVendor.description"
       />
 
       <the-button :loading="editing" class="w-100 mt-4">
@@ -171,6 +171,7 @@ export default {
           });
         });
     },
+
     getAllVendors() {
       this.gettingVendors = true;
       axios
@@ -203,7 +204,7 @@ export default {
           "http://localhost:5000/private/vendor/" + this.selectedVendor._id
         )
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.$eventBus.emit("toast", {
             type: "Success",
             message: res.data.message,
@@ -227,20 +228,16 @@ export default {
           this.deleting = false;
         });
     },
+
     editVendor() {
       this.editing = true;
       axios
         .put(
           "http://localhost:5000/private/vendor/" + this.selectedVendor._id,
-          this.selectedVendor,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
+          this.selectedVendor
         )
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.$eventBus.emit("toast", {
             type: "Success",
             message: res.data.message,
