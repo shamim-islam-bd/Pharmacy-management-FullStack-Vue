@@ -60,6 +60,7 @@
 <script>
 import axios from "axios";
 import TheButton from "../components/TheButton.vue";
+import { showToastError, showToastSuccess } from "../utils/eventBus";
 
 export default {
   data: () => ({
@@ -76,51 +77,34 @@ export default {
   },
   methods: {
     handleSubmit() {
-      // console.log(this.formData);
       if (!this.formData.email) {
-        // Show toast message
-        this.$eventBus.emit("Toast", {
-          type: "Error",
-          message: "Please enter valied email",
-        });
+        showToastError("Please enter valied email");
+
         this.$refs.email.focus();
         return;
       }
       if (this.formData.password.length < 6) {
-        // Show toast message
-        this.$eventBus.emit("Toast", {
-          type: "Error",
-          message: "password must be at least 6 characters",
-        });
+        showToastError("Password must be at least 6 characters");
 
         this.$refs.password.focus();
         return;
       }
 
       // Send data to server
+      // shamim@gmail.com
       axios
         .post("http://localhost:5000/login", this.formData)
         .then((res) => {
-          // console.log(res.data);
-          // Show toast message
-          this.$eventBus.emit("Toast", {
-            type: "Success",
-            message: res.data.message,
-          });
+          console.log(res);
+          showToastSuccess(res.data.message);
+          // showToastError("Login successfull");
+
           // set token localstorage & redirect to dashboard.
           localStorage.setItem("token", res.data.token);
           this.$router.push("/dashboard");
         })
         .catch((err) => {
-          let error = "Something went wrong";
-          if (err.response) {
-            error = err.response.data.error;
-          }
-          // Show toast message
-          this.$eventBus.emit("Toast", {
-            type: "Error",
-            message: error,
-          });
+          showToastError(err);
         });
     },
   },

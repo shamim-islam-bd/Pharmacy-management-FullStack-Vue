@@ -111,9 +111,11 @@
 </template>
 
 <script>
-import axios from "axios";
 import TheButton from "../../components/TheButton.vue";
 import TheModal from "../../components/TheModal.vue";
+// import { axiosPrivate } from "../../service/axiosInstance";
+import privateService from "../../service/privateService";
+import { showToastError, showToastSuccess } from "../../utils/eventBus";
 
 export default {
   data: () => ({
@@ -140,57 +142,42 @@ export default {
   mounted() {
     this.getAllVendors();
   },
+
   methods: {
+    resetForm() {
+      this.newVendor = { name: "", description: "" };
+    },
+
     addNew() {
       this.adding = true;
-      axios
-        .post("http://localhost:5000/private/vendor", this.newVendor)
+      // axios
+      //   .post("http://localhost:5000/private/vendor", this.newVendor)
+      privateService
+        .addNew(this.newVendor)
         .then((res) => {
           // console.log(res.data);
-          // Show toast message
-          this.$eventBus.emit("Toast", {
-            type: "Success",
-            message: res.data.message,
-          });
+          showToastSuccess(res.data.message);
+
           this.addModal = false;
-          // clear the form
-          this.newVendor = {
-            name: "",
-            description: "",
-          };
+          this.resetForm(); // clear the form
+          this.getAllVendors(); // for refresh the list
         })
         .catch((err) => {
-          let error = "Something went wrong";
-          if (err.response) {
-            error = err.response.data.error;
-          }
-          // Show toast message
-          this.$eventBus.emit("Toast", {
-            type: "Error",
-            message: error,
-          });
+          showToastError(err);
         });
     },
 
     getAllVendors() {
       this.gettingVendors = true;
-      axios
-        .get("http://localhost:5000/private/vendor")
+      // axios
+      //   .get("http://localhost:5000/private/vendor")
+      privateService
+        .getVendors()
         .then((res) => {
-          // console.log("res", res.data.vendorData);
           this.vendors = res.data.vendorData;
         })
         .catch((err) => {
-          let error = "Something went wrong";
-          if (err.response) {
-            // console.log(err.response);
-            error = err.response.statusText;
-          }
-          // Show toast message
-          this.$eventBus.emit("Toast", {
-            type: "Error",
-            message: error,
-          });
+          showToastError(err);
         })
         .finally(() => {
           this.gettingVendors = false;
@@ -199,30 +186,20 @@ export default {
 
     deleteVendor() {
       this.deleting = true;
-      axios
-        .delete(
-          "http://localhost:5000/private/vendor/" + this.selectedVendor._id
-        )
+      // axios
+      //   .delete(
+      //     "http://localhost:5000/private/vendor/" + this.selectedVendor._id
+      //   )
+      privateService
+        .deleteVendor(this.selectedVendor._id)
         .then((res) => {
-          // console.log(res.data);
-          this.$eventBus.emit("toast", {
-            type: "Success",
-            message: res.data.message,
-          });
+          showToastSuccess(res.data.message);
 
           this.deleteModal = false;
           this.getAllVendors();
         })
         .catch((err) => {
-          let errorMessage = "Something went wrong!";
-          if (err.response) {
-            errorMessage = err.response.data.message;
-          }
-
-          this.$eventBus.emit("toast", {
-            type: "Error",
-            message: errorMessage,
-          });
+          showToastError(err);
         })
         .finally(() => {
           this.deleting = false;
@@ -231,30 +208,19 @@ export default {
 
     editVendor() {
       this.editing = true;
-      axios
-        .put(
-          "http://localhost:5000/private/vendor/" + this.selectedVendor._id,
-          this.selectedVendor
-        )
+      // axios
+      //   .put(
+      //     "http://localhost:5000/private/vendor/" + this.selectedVendor._id,
+      //     this.selectedVendor
+      //   )
+      privateService
+        .editVendor(this.selectedVendor._id, this.selectedVendor)
         .then((res) => {
-          // console.log(res.data);
-          this.$eventBus.emit("toast", {
-            type: "Success",
-            message: res.data.message,
-          });
-
+          showToastSuccess(res.data.message);
           this.editModal = false;
         })
         .catch((err) => {
-          let errorMessage = "Something went wrong!";
-          if (err.response) {
-            errorMessage = err.response.data.message;
-          }
-
-          this.$eventBus.emit("toast", {
-            type: "Error",
-            message: errorMessage,
-          });
+          showToastError(err);
         })
         .finally(() => {
           this.editing = false;

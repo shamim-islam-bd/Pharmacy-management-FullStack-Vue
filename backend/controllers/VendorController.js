@@ -23,7 +23,10 @@ exports.getAllVendors = async(req, res, next) =>{
     try {
       const vendorData = await Vendor.find();
 
-      res.status(201).json({success: true, vendorData})
+      res.status(201).json({
+         success: true,
+         vendorData
+        })
         
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -36,7 +39,11 @@ exports.deleteVendor = async(req, res, next) =>{
     try {
       const vendorData = await Vendor.findByIdAndDelete(req.params.id);
 
-      res.status(201).json({success: true, vendorData})
+      res.status(201).json({
+        success: true, 
+        message: "Vendor deleted successfully",
+        vendorData
+    })
         
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -50,7 +57,11 @@ exports.updateVendor = async(req, res, next) =>{
           new: true,
       });
 
-      res.status(201).json({success: true, vendorData})
+      res.status(201).json({
+         success: true,
+         message: "Vendor updated successfully",
+         vendorData
+        })
         
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });

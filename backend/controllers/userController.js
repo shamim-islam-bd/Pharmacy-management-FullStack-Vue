@@ -71,7 +71,7 @@ exports.LoginUser = async(req, res, next) => {
     }
     
     // Generate and sending token for user... 
-    sendToken(auth, res, 200);
+    sendToken(auth, res, 201);
     // const token = await user.getJwtToken(); 
     // console.log(token);
 

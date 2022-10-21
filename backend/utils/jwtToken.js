@@ -14,7 +14,8 @@ exports.sendToken = (auth, res, statusCode) => {
         options.secure = true;
     }
     res.status(statusCode).cookie('token', token, options).json({
+        message: 'Login Successfull.',
         token,
-        auth
+        auth,
     });
  }
