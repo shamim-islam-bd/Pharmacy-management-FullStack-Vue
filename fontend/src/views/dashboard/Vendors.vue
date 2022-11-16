@@ -148,14 +148,13 @@ export default {
       this.newVendor = { name: "", description: "" };
     },
 
-    addNew() {
+    addNewVendor() {
       this.adding = true;
       // axios
       //   .post("http://localhost:5000/private/vendor", this.newVendor)
       privateService
-        .addNew(this.newVendor)
+        .addNewVendor(this.newVendor)
         .then((res) => {
-          // console.log(res.data);
           showToastSuccess(res.data.message);
 
           this.addModal = false;
