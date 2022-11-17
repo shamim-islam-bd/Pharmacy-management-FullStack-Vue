@@ -9,18 +9,37 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Description</th>
+        <th>Weight</th>
+        <th>Type</th>
+        <th>Vendor</th>
+        <th>Price</th>
+        <th>Quantity</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="vendor in drugs" :key="vendor.name">
         <td>
-          <!-- Shamim -->
           {{ vendor.name }}
         </td>
-        <!-- <td>Reads In university</td> -->
-        <td>{{ vendor.description }}</td>
+        <td>
+          {{ vendor.weight }}
+        </td>
+        <td>
+          {{ vendor.type }}
+        </td>
+        <td>
+          {{ vendor.vendor }}
+        </td>
+        <td>
+          {{ vendor.price }}
+        </td>
+        <td>
+          {{ vendor.quantity }}
+        </td>
+        <!-- {{
+          selectedDrug._id
+        }} -->
         <td>
           <img
             src="/img/edit.png"
@@ -45,7 +64,7 @@
     </tbody>
   </table>
 
-  <TheModal v-model="addModal" heading="Add new vendor">
+  <TheModal v-model="addModal" heading="Add new Drug">
     <form @submit.prevent="addNew">
       <label class="block">Select Drug Type</label>
       <div class="mt-2 mb-2">
@@ -105,8 +124,6 @@
         v-model="newDrug.weight"
       />
 
-      <!-- {{ vendors }} -->
-
       <label class="block mt-3">vendor</label>
       <select v-model="newDrug.vendor">
         <option value="">Selected One</option>
@@ -128,7 +145,7 @@
         v-model="newDrug.price"
       />
 
-      <label class="block mt-3">quantity</label>
+      <label class="block mt-3">Quantity</label>
       <input
         type="text"
         placeholder="select weight"
@@ -258,6 +275,7 @@ export default {
       privateService
         .getDrugs()
         .then((res) => {
+          // console.log(res.data);
           this.drugs = res.data.vendorData;
         })
         .catch((err) => {
