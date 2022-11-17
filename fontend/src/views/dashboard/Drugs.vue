@@ -153,14 +153,53 @@
         required
         v-model="newDrug.quantity"
       />
-
       <the-button :loading="adding" class="w-100 mt-4"> Add </the-button>
     </form>
   </TheModal>
 
-  <TheModal v-model="editModal" heading="Edit vendor">
-    <form @submit.prevent="editVendor">
-      <label class="block">Vendor Name</label>
+  <TheModal v-model="editModal" heading="Edit Drugs">
+    <form @submit.prevent="editDrug">
+      <label class="block">Select Drug Type</label>
+      <div class="mt-2 mb-2">
+        <label for="">
+          <input
+            type="radio"
+            name="type"
+            value="tablet"
+            v-model="selectedDrug.type"
+          />
+          Tablet
+        </label>
+        <label for="">
+          <input
+            type="radio"
+            name="type"
+            value="capsule"
+            v-model="selectedDrug.type"
+          />
+          Capsule
+        </label>
+        <label for="">
+          <input
+            type="radio"
+            name="type"
+            value="Syrap"
+            v-model="selectedDrug.type"
+          />
+          Syrap
+        </label>
+        <label for="">
+          <input
+            type="radio"
+            name="type"
+            value="Suppository"
+            v-model="selectedDrug.type"
+          />
+          Suppository
+        </label>
+      </div>
+
+      <label class="block"> Drug Name</label>
       <input
         type="text"
         placeholder="Enter vendor name"
@@ -169,13 +208,43 @@
         v-model="selectedDrug.name"
       />
 
-      <label class="block mt-3">Description</label>
+      <label class="block mt-3">weight</label>
       <input
         type="text"
-        placeholder="Write short description"
+        placeholder="select weight"
         class="mt-1 w-100"
         required
-        v-model="selectedDrug.description"
+        v-model="selectedDrug.weight"
+      />
+
+      <label class="block mt-3">vendor</label>
+      <select v-model="selectedDrug.vendor">
+        <option value="">Selected One</option>
+        <option
+          v-for="vendor in vendors"
+          :value="vendor.name"
+          :key="vendor.name"
+        >
+          {{ vendor.name }}
+        </option>
+      </select>
+
+      <label class="block mt-3">Price</label>
+      <input
+        type="text"
+        placeholder="select weight"
+        class="mt-1 w-100"
+        required
+        v-model="selectedDrug.price"
+      />
+
+      <label class="block mt-3">Quantity</label>
+      <input
+        type="text"
+        placeholder="select weight"
+        class="mt-1 w-100"
+        required
+        v-model="selectedDrug.quantity"
       />
 
       <the-button :loading="editing" class="w-100 mt-4">
@@ -320,7 +389,7 @@ export default {
         });
     },
 
-    editVendor() {
+    editDrug() {
       this.editing = true;
       // axios
       //   .put(
