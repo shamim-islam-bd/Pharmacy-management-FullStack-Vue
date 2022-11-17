@@ -18,6 +18,7 @@ const DataBaseConfiguration = require("./config/database");
 const errorsMiddleware = require("./middlewares/errors");
 const userRoute = require("./routes/userRoute");
 const VendorRoute = require("./routes/VendorRoute");
+const DrugRoute = require("./routes/DrugRoute");
 
 
 // database Connection
@@ -39,6 +40,7 @@ app.get('/', (req, res) => {
 // Routings
 app.use('/', userRoute);
 app.use('/', VendorRoute);
+app.use('/', DrugRoute);
 
 
 
